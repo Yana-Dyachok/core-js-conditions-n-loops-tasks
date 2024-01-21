@@ -311,8 +311,49 @@ function getBalanceIndex(arr) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  const matrix = [];
+
+  let row = 0;
+  let col = 0;
+  let value = 1;
+  let rowLength = size - 1;
+  let colLength = size - 1;
+
+  for (let i = 0; i < size; i += 1) {
+    matrix[i] = [];
+  }
+
+  while (col <= colLength && row <= rowLength) {
+    for (let i = col; i <= colLength; i += 1) {
+      matrix[row][i] = value;
+      value += 1;
+    }
+
+    row += 1;
+
+    for (let i = row; i <= rowLength; i += 1) {
+      matrix[i][colLength] = value;
+      value += 1;
+    }
+
+    colLength -= 1;
+
+    for (let i = colLength; i >= col; i -= 1) {
+      matrix[rowLength][i] = value;
+      value += 1;
+    }
+
+    rowLength -= 1;
+
+    for (let i = rowLength; i >= row; i -= 1) {
+      matrix[i][col] = value;
+      value += 1;
+    }
+
+    col += 1;
+  }
+  return matrix;
 }
 
 /**
@@ -330,8 +371,22 @@ function getSpiralMatrix(/* size */) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const res = matrix;
+  const array = [];
+
+  for (let i = 0; i < matrix.length; i += 1) {
+    array[i] = [];
+    for (let j = 0; j < matrix.length; j += 1) {
+      array[i][j] = matrix[i][j];
+    }
+  }
+  for (let i = 0; i < matrix.length; i += 1) {
+    for (let j = 0; j < matrix.length; j += 1) {
+      res[i][j] = array[matrix.length - j - 1][i];
+    }
+  }
+  return res;
 }
 
 /**
@@ -348,8 +403,25 @@ function rotateMatrix(/* matrix */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr) {
+  const newArray = [...arr];
+  const n = newArray.length;
+
+  for (let i = 0; i < n - 1; i += 1) {
+    let min = i;
+
+    for (let j = i + 1; j < n; j += 1) {
+      if (newArray[j] < newArray[min]) {
+        min = j;
+      }
+    }
+
+    if (min !== i) {
+      [newArray[i], newArray[min]] = [newArray[min], newArray[i]];
+    }
+  }
+
+  return newArray;
 }
 
 /**
@@ -369,8 +441,26 @@ function sortByAsc(/* arr */) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  if (str.length === 0 || iterations <= 0) return str;
+
+  let res = str;
+
+  for (let i = 0; i < iterations; i += 1) {
+    let even = '';
+    let odd = '';
+
+    for (let j = 0; j < res.length; j += 1) {
+      if (j % 2 === 0) even += res[j];
+      else odd += res[j];
+    }
+
+    res = even + odd;
+
+    if (res === str) return shuffleChar(str, iterations % (i + 1));
+  }
+
+  return res;
 }
 
 /**
@@ -390,8 +480,49 @@ function shuffleChar(/* str, iterations */) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  let str = String(number);
+  let lastValue = str.length - 2;
+  while (lastValue >= 0 && str[lastValue] >= str[lastValue + 1]) {
+    lastValue -= 1;
+  }
+  if (lastValue === -1) return +str;
+  let j = str.length - 1;
+  while (str[j] <= str[lastValue]) {
+    j -= 1;
+  }
+  const newI = str[lastValue];
+  const newJ = str[j];
+  const arr1 = [];
+  for (let i1 = 0; i1 < lastValue; i1 += 1) {
+    arr1[i1] = str[i1];
+  }
+  const arr2 = [];
+  let ii2 = 0;
+  for (let i2 = lastValue + 1; i2 < j; i2 += 1) {
+    arr2[ii2] = str[i2];
+    ii2 += 1;
+  }
+  const arr3 = [];
+  let ii3 = 0;
+  for (let i3 = j + 1; i3 < str.length; i3 += 1) {
+    arr3[ii3] = str[i3];
+    ii3 += 1;
+  }
+  str = arr1.join('') + newJ + arr2.join('') + newI + arr3.join('');
+  const rightFromIArr = [];
+  let ii1 = 0;
+  for (let ii = lastValue + 1; ii < str.length; ii += 1) {
+    rightFromIArr[ii1] = str[ii];
+    ii1 += 1;
+  }
+  rightFromIArr.sort((a, b) => a - b);
+  const leftArr = [];
+  for (let iii = 0; iii < lastValue + 1; iii += 1) {
+    leftArr[iii] = str[iii];
+  }
+  str = leftArr.join('') + rightFromIArr.join('');
+  return +str;
 }
 
 module.exports = {
